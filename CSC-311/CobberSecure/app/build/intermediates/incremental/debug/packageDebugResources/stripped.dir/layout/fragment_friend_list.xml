@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FriendListFragment">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/flist_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:gravity="left"
+                android:hint="@string/flist_search_text"
+                android:textSize="12sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/flist_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:text="@string/flist_title_text"
+                android:textAlignment="center"/>
+
+
+            <TableLayout
+                android:id="@+id/flist_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="15dp">
+
+                <!-- first row of the table layout-->
+                <TableRow
+
+                    android:id="@+id/friend1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3">
+
+                    <!-- first element of the row-->
+                    <ImageView
+
+                        android:id="@+id/friend1_img"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        app:srcCompat="@drawable/ic_launcher_foreground"/>
+
+                    <TextView
+
+                        android:id="@+id/friend1_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:text="@string/flist_friend1_name"
+                        android:textColor="#000"
+                        android:textSize="12dp" />
+
+                    <Button
+
+                        android:id="@+id/friend1_ping"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:text="@string/flist_ping_text"
+                        android:textSize="12dp"/>
+
+                </TableRow>
+
+                <TableRow
+
+                    android:id="@+id/friend2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3">
+
+                    <!-- first element of the row-->
+                    <ImageView
+
+                        android:id="@+id/friend2_img"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        app:srcCompat="@drawable/ic_launcher_foreground"/>
+
+                    <TextView
+
+                        android:id="@+id/friend2_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:text="@string/flist_friend2_name"
+                        android:textColor="#000"
+                        android:textSize="12dp" />
+
+                    <Button
+
+                        android:id="@+id/friend2_ping"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:text="@string/flist_ping_text"
+                        android:textSize="12dp"/>
+
+                </TableRow>
+
+                <TableRow
+
+                    android:id="@+id/friend3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3">
+
+                    <!-- first element of the row-->
+                    <ImageView
+
+                        android:id="@+id/friend3_img"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        app:srcCompat="@drawable/ic_launcher_foreground"/>
+
+                    <TextView
+
+                        android:id="@+id/friend3_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:text="@string/flist_friend3_name"
+                        android:textColor="#000"
+                        android:textSize="12dp" />
+
+                    <Button
+
+                        android:id="@+id/friend3_ping"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:text="@string/flist_ping_text"
+                        android:textSize="12dp"/>
+
+                </TableRow>
+
+                <TableRow
+
+                    android:id="@+id/friend4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3">
+
+                    <!-- first element of the row-->
+                    <ImageView
+
+                        android:id="@+id/friend4_img"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        app:srcCompat="@drawable/ic_launcher_foreground"/>
+
+                    <TextView
+
+                        android:id="@+id/friend4_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:text="@string/flist_friend4_name"
+                        android:textColor="#000"
+                        android:textSize="12dp" />
+
+                    <Button
+
+                        android:id="@+id/friend4_ping"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:text="@string/flist_ping_text"
+                        android:textSize="12dp"/>
+
+                </TableRow>
+
+                <TableRow
+
+                    android:id="@+id/friend5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3">
+
+                    <!-- first element of the row-->
+                    <ImageView
+
+                        android:id="@+id/friend5_img"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        app:srcCompat="@drawable/ic_launcher_foreground"/>
+
+                    <TextView
+
+                        android:id="@+id/friend5_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:text="@string/flist_friend5_name"
+                        android:textColor="#000"
+                        android:textSize="12dp" />
+
+                    <Button
+
+                        android:id="@+id/friend5_ping"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="#b0b0b0"
+                        android:padding="8dip"
+                        android:layout_weight="1"
+                        android:text="@string/flist_ping_text"
+                        android:textSize="12dp"/>
+
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

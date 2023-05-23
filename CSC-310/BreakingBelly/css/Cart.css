@@ -1,0 +1,31 @@
+.cart{
+	margin-left: 12%;
+	height: 45%;
+}
+.cartHeader{
+	font-size: 36px;
+	width: 90%;
+	margin-top: 5%;
+	
+	border: 5px solid#ccc;
+	border-radius: 15px;
+}
+.item{
+	font-size: 24px;
+}
+.product_name{
+
+	float:right;
+	margin-right: 10%;
+
+}
+.product_price{
+	margin-right: 10%;
+	float:right;
+
+}
+.cartSubmit{
+	
+	height: 50px;
+	width: 200px;
+}

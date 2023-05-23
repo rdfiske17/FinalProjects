@@ -1,0 +1,132 @@
+:root {
+    --formWidth: 35%;
+    --contentsWidth: 70%;
+}
+
+.container {
+    padding-bottom: 100px;
+}
+
+.contactForm {
+    border: var(--Color6) solid 1px;
+    border-radius: 25px;
+    width: var(--formWidth);
+
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.title {
+    width: var(--contentsWidth);
+    margin: 0 auto;
+    margin-top: 30px;
+    text-align: center;
+
+    color: var(--Color1);
+}
+
+.subtitle {
+    width: var(--contentsWidth);
+    margin: 0 auto;
+    margin-top: 10px;
+    text-align: center;
+}
+
+input, textarea {
+    font-family: coolvetica, sans-serif;
+    font-weight:500;
+    font-style: normal;
+    font-size: 1em;
+}
+
+.content-flexbox1 {
+    display: flex;
+    gap: 10px;
+    
+    /*border: white solid 1px;*/
+    flex-direction: row;
+    
+    width: var(--contentsWidth);
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.content-flexbox1 input {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background:transparent;
+    text-indent: 10px;
+
+    width: 50%;
+
+    border: var(--Color6) solid 1px;
+    border-radius: 10px;
+
+    margin-top:5px;
+    margin-bottom: 5px;
+}
+
+/* https://www.w3schools.com/howto/howto_css_placeholder.asp */
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: var(--Color6);
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: var(--Color6);
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: var(--Color6);
+  }
+
+.content-flexbox2 {
+    display: flex;
+    /*border: white solid 1px;*/
+    flex-direction:column;
+    
+    width: var(--contentsWidth);
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+.content-flexbox2 input, textarea {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background:transparent;
+    text-indent: 10px;
+
+    border: var(--Color6) solid 1px;
+    border-radius: 10px;
+
+    margin-top:5px;
+    margin-bottom: 5px;
+}
+
+.nested-content-flexbox2 {
+    display: flex;
+    font-size: .75em;
+
+    margin-bottom: 20px;
+}
+
+.nested-content-flexbox2 [type=checkbox] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 2px;
+}
+  
+.nested-content-flexbox2 label {
+    display: block;
+}
+
+.submit {
+    color: var(--Color6);
+}
+
+.submit:hover{
+    color: var(--Color1);
+    border: var(--Color1) solid 1px;
+    cursor: pointer;
+    transition:0.2s ease;
+}

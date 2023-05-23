@@ -1,0 +1,448 @@
+---
+title: "DATA_318_Final_Project"
+author: "Riley Fiske"
+date: "4/28/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(caret)
+library(leaps) # Needed for Subset Selection
+library(ipred) # for bagging
+library(rpart) # for tree-based methods
+library(gbm) # for boosting
+library(ggfortify) # for plotting PCA
+library(factoextra) # for plotting PCA
+library(pls) # for PCR
+library(gridExtra)
+library(ggplot2)
+
+citation('tidyverse')
+citation('lubridate')
+citation('caret')
+citation('leaps')
+citation('ipred')
+citation('rpart')
+citation('gbm')
+citation('ggfortify')
+citation('factoextra')
+citation('pls')
+citation('gridExtra')
+citation('ggplot2')
+```
+
+## Project Description
+Using Foreign Exchange rates relative to the US Dollar, this project sought to create a model that would most accurately predict the exchange rate of the Euro to the Dollar using lead variables from one and two previous days only. It started with all currencies, but it became obvious quite early that certain currencies were too closely related to the Euro and leakage was occurring. All European currencies were then filtered out, quickly followed by the Australian and New Zealand Dollars since they are also very closely related.
+
+## Data Input and Cleaning
+```{r}
+Forex_DF <- read.csv("https://raw.githubusercontent.com/rdfiske17/DATA-318/main/Datasets/eurofxref-hist.csv",stringsAsFactors=TRUE)
+#https://data.humdata.org/dataset/ecb-fx-rates?force_layout=desktop
+#List of Currency Names: https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html
+#UPDATED: use https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip to download file manually as it cannot be dynamically pulled anymore
+
+Forex_DF <- Forex_DF[-1,] %>% dplyr::select(-TRL) #TRL became TRY in 2005
+Forex_DF$Date <- as.character(Forex_DF$Date)
+Forex_DF$USD <- as.numeric(as.character(Forex_DF$USD))
+Forex_DF$JPY <- as.numeric(as.character(Forex_DF$JPY))
+Forex_DF$BGN <- as.numeric(as.character(Forex_DF$BGN))
+Forex_DF$CYP <- as.numeric(as.character(Forex_DF$CYP))
+Forex_DF$CZK <- as.numeric(as.character(Forex_DF$CZK))
+Forex_DF$DKK <- as.numeric(as.character(Forex_DF$DKK))
+Forex_DF$EEK <- as.numeric(as.character(Forex_DF$EEK))
+Forex_DF$GBP <- as.numeric(as.character(Forex_DF$GBP))
+Forex_DF$HUF <- as.numeric(as.character(Forex_DF$HUF))
+Forex_DF$LTL <- as.numeric(as.character(Forex_DF$LTL))
+Forex_DF$LVL <- as.numeric(as.character(Forex_DF$LVL))
+Forex_DF$MTL <- as.numeric(as.character(Forex_DF$MTL))
+Forex_DF$PLN <- as.numeric(as.character(Forex_DF$PLN))
+Forex_DF$RON <- as.numeric(as.character(Forex_DF$RON))
+Forex_DF$ROL <- as.numeric(as.character(Forex_DF$ROL))
+Forex_DF$SEK <- as.numeric(as.character(Forex_DF$SEK))
+Forex_DF$SIT <- as.numeric(as.character(Forex_DF$SIT))
+Forex_DF$SKK <- as.numeric(as.character(Forex_DF$SKK))
+Forex_DF$CHF <- as.numeric(as.character(Forex_DF$CHF))
+Forex_DF$ISK <- as.numeric(as.character(Forex_DF$ISK))
+Forex_DF$NOK <- as.numeric(as.character(Forex_DF$NOK))
+Forex_DF$HRK <- as.numeric(as.character(Forex_DF$HRK))
+Forex_DF$RUB <- as.numeric(as.character(Forex_DF$RUB))
+Forex_DF$TRY <- as.numeric(as.character(Forex_DF$TRY))
+Forex_DF$AUD <- as.numeric(as.character(Forex_DF$AUD))
+Forex_DF$BRL <- as.numeric(as.character(Forex_DF$BRL))
+Forex_DF$CAD <- as.numeric(as.character(Forex_DF$CAD))
+Forex_DF$CNY <- as.numeric(as.character(Forex_DF$CNY))
+Forex_DF$HKD <- as.numeric(as.character(Forex_DF$HKD))
+Forex_DF$IDR <- as.numeric(as.character(Forex_DF$IDR))
+Forex_DF$ILS <- as.numeric(as.character(Forex_DF$ILS))
+Forex_DF$INR <- as.numeric(as.character(Forex_DF$INR))
+Forex_DF$KRW <- as.numeric(as.character(Forex_DF$KRW))
+Forex_DF$MXN <- as.numeric(as.character(Forex_DF$MXN))
+Forex_DF$MYR <- as.numeric(as.character(Forex_DF$MYR))
+Forex_DF$NZD <- as.numeric(as.character(Forex_DF$NZD))
+Forex_DF$PHP <- as.numeric(as.character(Forex_DF$PHP))
+Forex_DF$SGD <- as.numeric(as.character(Forex_DF$SGD))
+Forex_DF$THB <- as.numeric(as.character(Forex_DF$THB))
+Forex_DF$ZAR <- as.numeric(as.character(Forex_DF$ZAR))
+Forex_DF$Date <- as.Date(Forex_DF$Date)
+
+Forex_DF <- Forex_DF %>%
+  mutate(EUR = 1/USD,
+         JPY = (JPY*EUR)/USD,
+         BGN = (BGN*EUR)/USD,
+         CYP = (CYP*EUR)/USD,
+         CZK = (CZK*EUR)/USD,
+         DKK = (DKK*EUR)/USD,
+         EEK = (EEK*EUR)/USD,
+         GBP = (GBP*EUR)/USD,
+         HUF = (HUF*EUR)/USD,
+         LTL = (LTL*EUR)/USD,
+         LVL = (LVL*EUR)/USD,
+         MTL = (MTL*EUR)/USD,
+         PLN = (PLN*EUR)/USD,
+         RON = (RON*EUR)/USD,
+         ROL = (ROL*EUR)/USD,
+         SEK = (SEK*EUR)/USD,
+         SIT = (SIT*EUR)/USD,
+         SKK = (SKK*EUR)/USD,
+         CHF = (CHF*EUR)/USD,
+         ISK = (ISK*EUR)/USD,
+         NOK = (NOK*EUR)/USD,
+         HRK = (HRK*EUR)/USD,
+         RUB = (RUB*EUR)/USD,
+         TRY = (TRY*EUR)/USD,
+         AUD = (AUD*EUR)/USD,
+         BRL = (BRL*EUR)/USD,
+         CAD = (CAD*EUR)/USD,
+         CNY = (CNY*EUR)/USD,
+         HKD = (HKD*EUR)/USD,
+         IDR = (IDR*EUR)/USD,
+         ILS = (ILS*EUR)/USD,
+         INR = (INR*EUR)/USD,
+         KRW = (KRW*EUR)/USD,
+         MXN = (MXN*EUR)/USD,
+         MYR = (MYR*EUR)/USD,
+         NZD = (NZD*EUR)/USD,
+         PHP = (PHP*EUR)/USD,
+         SGD = (SGD*EUR)/USD,
+         THB = (THB*EUR)/USD,
+         ZAR = (ZAR*EUR)/USD)
+
+Forex_DF_asc <- Forex_DF %>% arrange(ymd(Forex_DF$Date))
+Forex_No_Date_DF <- Forex_DF %>% dplyr::select(-Date)
+
+Forex_Lead_DF <- Forex_DF %>%
+  mutate(EUR.lead = lead(EUR)) %>%
+  mutate(JPY.lead = lead(JPY)) %>%
+  mutate(BGN.lead = lead(BGN)) %>%
+  mutate(CYP.lead = lead(CYP)) %>%
+  mutate(CZK.lead = lead(CZK)) %>%
+  mutate(DKK.lead = lead(DKK)) %>%
+  mutate(EEK.lead = lead(EEK)) %>%
+  mutate(GBP.lead = lead(GBP)) %>%
+  mutate(HUF.lead = lead(HUF)) %>%
+  mutate(LTL.lead = lead(LTL)) %>%
+  mutate(LVL.lead = lead(LVL)) %>%
+  mutate(MTL.lead = lead(MTL)) %>%
+  mutate(PLN.lead = lead(PLN)) %>%
+  mutate(RON.lead = lead(RON)) %>%
+  mutate(ROL.lead = lead(ROL)) %>%
+  mutate(SEK.lead = lead(SEK)) %>%
+  mutate(SIT.lead = lead(SIT)) %>%
+  mutate(SKK.lead = lead(SKK)) %>%
+  mutate(CHF.lead = lead(CHF)) %>%
+  mutate(ISK.lead = lead(ISK)) %>%
+  mutate(NOK.lead = lead(NOK)) %>%
+  mutate(HRK.lead = lead(HRK)) %>%
+  mutate(RUB.lead = lead(RUB)) %>%
+  mutate(TRY.lead = lead(TRY)) %>%
+  mutate(AUD.lead = lead(AUD)) %>%
+  mutate(BRL.lead = lead(BRL)) %>%
+  mutate(CAD.lead = lead(CAD)) %>%
+  mutate(CNY.lead = lead(CNY)) %>%
+  mutate(HKD.lead = lead(HKD)) %>%
+  mutate(IDR.lead = lead(IDR)) %>%
+  mutate(ILS.lead = lead(ILS)) %>%
+  mutate(INR.lead = lead(INR)) %>%
+  mutate(KRW.lead = lead(KRW)) %>%
+  mutate(MXN.lead = lead(MXN)) %>%
+  mutate(MYR.lead = lead(MYR)) %>%
+  mutate(NZD.lead = lead(NZD)) %>%
+  mutate(PHP.lead = lead(PHP)) %>%
+  mutate(SGD.lead = lead(SGD)) %>%
+  mutate(THB.lead = lead(THB)) %>%
+  mutate(ZAR.lead = lead(ZAR))
+
+Forex_Lead_DF <- Forex_Lead_DF[-nrow(Forex_Lead_DF),]
+
+Forex_Lead2_DF <- Forex_Lead_DF %>%
+  mutate(EUR.lead2 = lead(EUR.lead)) %>%
+  mutate(JPY.lead2 = lead(JPY.lead)) %>%
+  mutate(BGN.lead2 = lead(BGN.lead)) %>%
+  mutate(CYP.lead2 = lead(CYP.lead)) %>%  
+  mutate(CZK.lead2 = lead(CZK.lead)) %>%
+  mutate(DKK.lead2 = lead(DKK.lead)) %>%
+  mutate(EEK.lead2 = lead(EEK.lead)) %>%
+  mutate(GBP.lead2 = lead(GBP.lead)) %>%
+  mutate(HUF.lead2 = lead(HUF.lead)) %>%
+  mutate(LTL.lead2 = lead(LTL.lead)) %>%
+  mutate(LVL.lead2 = lead(LVL.lead)) %>%
+  mutate(MTL.lead2 = lead(MTL.lead)) %>%
+  mutate(PLN.lead2 = lead(PLN.lead)) %>%
+  mutate(RON.lead2 = lead(RON.lead)) %>%
+  mutate(ROL.lead2 = lead(ROL.lead)) %>%
+  mutate(SEK.lead2 = lead(SEK.lead)) %>%
+  mutate(SIT.lead2 = lead(SIT.lead)) %>%
+  mutate(SKK.lead2 = lead(SKK.lead)) %>%
+  mutate(CHF.lead2 = lead(CHF.lead)) %>%
+  mutate(ISK.lead2 = lead(ISK.lead)) %>%
+  mutate(NOK.lead2 = lead(NOK.lead)) %>%
+  mutate(HRK.lead2 = lead(HRK.lead)) %>%
+  mutate(RUB.lead2 = lead(RUB.lead)) %>%
+  mutate(TRY.lead2 = lead(TRY.lead)) %>%
+  mutate(AUD.lead2 = lead(AUD.lead)) %>%
+  mutate(BRL.lead2 = lead(BRL.lead)) %>%
+  mutate(CAD.lead2 = lead(CAD.lead)) %>%
+  mutate(CNY.lead2 = lead(CNY.lead)) %>%
+  mutate(HKD.lead2 = lead(HKD.lead)) %>%
+  mutate(IDR.lead2 = lead(IDR.lead)) %>%
+  mutate(ILS.lead2 = lead(ILS.lead)) %>%
+  mutate(INR.lead2 = lead(INR.lead)) %>%
+  mutate(KRW.lead2 = lead(KRW.lead)) %>%
+  mutate(MXN.lead2 = lead(MXN.lead)) %>%
+  mutate(MYR.lead2 = lead(MYR.lead)) %>%
+  mutate(NZD.lead2 = lead(NZD.lead)) %>%
+  mutate(PHP.lead2 = lead(PHP.lead)) %>%
+  mutate(SGD.lead2 = lead(SGD.lead)) %>%
+  mutate(THB.lead2 = lead(THB.lead)) %>%
+  mutate(ZAR.lead2 = lead(ZAR.lead))
+
+Forex_Lead2_DF <- Forex_Lead2_DF[-nrow(Forex_Lead2_DF),]
+
+# Filtered out all other European, Canadian, Australian, and New Zealand currencies,
+Forex_EUR_Leads_DF <- dplyr::select(Forex_Lead2_DF,ends_with(c("Date","EUR",".lead",".lead2"))) %>% dplyr::select(!contains(c("EUR.lead","EUR.lead2","BGN","CYP", "DKK","EEK","CZK","SEK","CHF","HUF","GBP","LTL","LVL","MTL","PLN","RON","ROL","ISK","NOK","HRK","CAD","AUD","NZD","SIT","SKK","RUB")))
+
+test_index <- createDataPartition(Forex_EUR_Leads_DF$EUR ,p=0.1, list=FALSE)
+train_forex <- Forex_EUR_Leads_DF[-test_index,]
+test_forex <- Forex_EUR_Leads_DF[test_index,]
+```
+
+
+## Data Visualization
+```{r}
+eur_plot <- ggplot(Forex_DF_asc,mapping=aes(x=Date,y=EUR,group=1)) +
+  geom_line() +
+  labs(x="Year",y="EUR/USD")
+dkk_plot <- ggplot(Forex_DF_asc,mapping=aes(x=Date,y=DKK,group=1)) +
+  geom_line() +
+  labs(x="Year",y="DKK/USD") #Trend is nearly identical to EUR
+cor(Forex_DF$EUR,Forex_DF$DKK)
+aud_plot <- ggplot(Forex_DF_asc,mapping=aes(x=Date,y=AUD,group=1)) +
+  geom_line() +
+  labs(x="Year",y="AUD/USD") #Trend is nearly identical to EUR
+cor(Forex_DF$EUR,Forex_DF$AUD)
+jpy_plot <- ggplot(Forex_DF_asc,mapping=aes(x=Date,y=JPY,group=1)) +
+  geom_line() +
+  labs(x="Year",y="JPY/USD")
+cor(Forex_DF$EUR,Forex_DF$JPY)
+cny_plot <- ggplot(Forex_DF_asc,mapping=aes(x=Date,y=CNY,group=1)) +
+  geom_line() +
+  labs(x="Year",y="CNY/USD")
+cor(Forex_DF$EUR,Forex_DF$CNY)
+krw_plot <- ggplot(Forex_DF_asc,mapping=aes(x=Date,y=KRW,group=1)) +
+  geom_line() +
+  labs(x="Year",y="KRW/USD")
+cor(Forex_DF$EUR,Forex_DF$KRW)
+
+grid.arrange(eur_plot,dkk_plot,aud_plot)
+grid.arrange(eur_plot,jpy_plot,cny_plot,krw_plot)
+```
+## Forecasting Setup
+```{r}
+# Extraneous Code from working with Forecasting Models
+#
+# Future_Forex_DF <- insertRows(Forex_DF_asc,1,new = NA)
+# Future_Forex_DF <- insertRows(Future_Forex_DF,nrow(Future_Forex_DF),new = NA)
+# 
+# Future_Forex_DF <- replicate(2,{(insertRows(Future_Forex_DF,nrow(Future_Forex_DF)+1,new = NA))})
+# 
+# #Future_Forex_DF$Date[1] <- Sys.Date()+1
+# #Forex_Lag <- lag(Forex_DF,k=1)
+# #Forex_1999_2019_DF <- Forex_DF[Forex_DF$Date < "2020-01-01",]
+# #Forex_2020_2022_DF <- Forex_DF[Forex_DF$Date >= "2020-01-01",]
+# 
+# Forex_skip_30 <- head(Forex_DF_asc,-30)
+# 
+# eur_arima <- auto.arima(Forex_skip_30$EUR, seasonal = TRUE, stepwise = FALSE, approximation = FALSE)
+# eur_pred<- forecast(eur_arima,h=30)
+# eur_pred$upper[,2]
+# tail(Forex_DF_asc,30)
+# postResample(eur_pred$upper[,2],tail(Forex_DF_asc$EUR,30))
+```
+
+
+## Subset Selection to see best variables for predicting Euro exchange rate
+```{r}
+eur_vars <- regsubsets(EUR~.-Date, data = Forex_EUR_Leads_DF,nvmax=ncol(Forex_EUR_Leads_DF)-1,method="backward")
+summary(eur_vars)
+
+eur_summary <- summary(eur_vars)
+
+# plot(eur_summary$adjr2, xlab = "Number of Variables", ylab = "ADJR2", type = "l")
+# plot(eur_summary$rss, xlab = "Number of Variables", ylab = "RSS", type = "l")
+# plot(eur_summary$rsq, xlab = "Number of Variables", ylab = "RSQ", type = "l")
+# plot(eur_summary$cp, xlab = "Number of Variables", ylab = "CP", type = "l")
+# plot(eur_summary$bic, xlab = "Number of Variables", ylab = "BIC", type = "l")
+
+
+which.max(eur_summary$adjr2)
+which.min(eur_summary$rss)
+which.max(eur_summary$rsq)
+which.min(eur_summary$cp)
+which.min(eur_summary$bic)
+
+var_names <- colnames(eur_summary$which)
+var_in_best <- var_names[eur_summary$which[which.min(eur_summary$bic),]]
+formula <- paste0("EUR~",paste(var_in_best[-1],collapse = "+"))
+var_in_best
+```
+
+## Summarizing Linear Models to see statistical significance of each variable
+```{r}
+summary(lm(formula,Forex_EUR_Leads_DF))
+```
+## Linear Model using optimal BIC Subset variables
+```{r}
+eur_lm <- lm(formula,train_forex)
+eur_lm_pred <- predict(eur_lm,test_forex)
+postResample(eur_lm_pred,test_forex$EUR)
+
+ggplot()+
+  geom_line(test_forex,mapping=aes(x=Date,y=EUR,color="Test Set",group=1)) +
+  geom_line(mapping=aes(x=test_forex$Date,y=eur_lm_pred,color="Predictions",group=1)) +
+  scale_color_manual("",breaks=c("Test Set","Predictions"),values=c("Blue","Red")) +
+  labs(title="Linear Regression Predicition")
+
+
+Forex_post_2005 <- Forex_EUR_Leads_DF %>% filter(Date>"2005-04-05")
+
+test_2005_index <- createDataPartition(Forex_post_2005$EUR ,p=0.1, list=FALSE)
+train_2005_forex <- Forex_post_2005[-test_2005_index,]
+test_2005_forex <- Forex_post_2005[test_2005_index,]
+
+eur_2005_lm <- lm(formula,train_2005_forex)
+eur_2005_lm_pred <- predict(eur_2005_lm,test_2005_forex)
+postResample(eur_2005_lm_pred,test_2005_forex$EUR)
+
+ggplot()+
+  geom_line(test_2005_forex,mapping=aes(x=Date,y=EUR,color="Test Set",group=1)) +
+  geom_line(mapping=aes(x=test_2005_forex$Date,y=eur_2005_lm_pred,color="Predictions",group=1)) +
+  scale_color_manual("",breaks=c("Test Set","Predictions"),values=c("Blue","Red")) +
+  labs(title="Linear Regression (2005-Present) Predicition")
+
+
+```
+## PCR Model
+```{r}
+eur_pcr <- pcr(EUR~., data = train_forex, scale = TRUE, validation = "CV")
+eur_pcr_pred <- predict(eur_pcr,test_forex,ncomp=which.min(eur_summary$bic))
+postResample(eur_pcr_pred,test_forex$EUR)
+
+ggplot()+
+  geom_line(test_forex,mapping=aes(x=Date,y=EUR,color="Test Set",group=1)) +
+  geom_line(mapping=aes(x=test_forex$Date,y=eur_pcr_pred,color="Predictions",group=1)) +
+  scale_color_manual("",breaks=c("Test Set","Predictions"),values=c("Blue","Red")) +  
+  labs(title="Principal Component Regression Predicition")
+
+```
+## Bagged Trees
+```{r}
+bag.mod <- bagging(
+  formula =EUR~.-Date,
+  data = train_forex,
+  nbagg = 150,
+  coob = TRUE,
+  control = rpart.control(minsplit=20, cp = 0)
+)
+
+bag.mod
+
+eur_bag_pred <- predict(bag.mod, test_forex)
+postResample(eur_bag_pred,test_forex$EUR)
+
+ggplot()+
+  geom_line(test_forex,mapping=aes(x=Date,y=EUR,color="Test Set",group=1)) +
+  geom_line(mapping=aes(x=test_forex$Date,y=eur_bag_pred,color="Predictions",group=1)) +
+  scale_color_manual("",breaks=c("Test Set","Predictions"),values=c("Blue","Red")) +
+  labs(title="Bagged Trees Predicition")
+
+```
+## Boosted Trees
+```{r}
+eur_boost<-gbm(EUR~.-Date, data=train_forex, 
+           distribution="gaussian",
+           n.trees=200, 
+           interaction.depth=4, 
+           shrinkage= 0.1,
+           cv.folds = 10)
+
+summary(eur_boost)
+best.iter <- gbm.perf(eur_boost, plot.it = TRUE)
+
+eur_boost_pred <- predict(eur_boost, newdata = test_forex, n.trees = best.iter)
+postResample(eur_boost_pred,test_forex$EUR)
+
+ggplot()+
+  geom_line(test_forex,mapping=aes(x=Date,y=EUR,color="Test Set",group=1)) +
+  geom_line(mapping=aes(x=test_forex$Date,y=eur_boost_pred,color="Predictions",group=1)) +
+  scale_color_manual("",breaks=c("Test Set","Predictions"),values=c("Blue","Red")) +
+  labs(title="Boosted Trees Predicition")
+
+```
+
+## Applying the Models
+```{r}
+
+##Bagged Trees Predictions
+
+Apr_11_22 <- Forex_EUR_Leads_DF %>% filter(Date=="2022-04-11")
+bag_pred <- predict(bag.mod,Apr_11_22)
+postResample(bag_pred,Apr_11_22$EUR)
+
+Apr_21_22 <- Forex_EUR_Leads_DF %>% filter(Date=="2022-04-21")
+bag_pred <- predict(bag.mod,Apr_21_22)
+postResample(bag_pred,Apr_21_22$EUR)
+
+Apr_27_22 <- Forex_EUR_Leads_DF %>% filter(Date=="2022-04-27")
+bag_pred <- predict(bag.mod,Apr_27_22)
+postResample(bag_pred,Apr_27_22$EUR)
+
+today <- Forex_EUR_Leads_DF %>% filter(Date==Sys.Date())
+bag_pred <- predict(bag.mod,today)
+postResample(bag_pred,today$EUR)
+
+##Boosted Trees Predictions
+
+Apr_11_22 <- Forex_EUR_Leads_DF %>% filter(Date=="2022-04-11")
+boost_pred <- predict(eur_boost,Apr_11_22)
+postResample(boost_pred,Apr_11_22$EUR)
+
+Apr_21_22 <- Forex_EUR_Leads_DF %>% filter(Date=="2022-04-21")
+boost_pred <- predict(eur_boost,Apr_21_22)
+postResample(boost_pred,Apr_21_22$EUR)
+
+Apr_27_22 <- Forex_EUR_Leads_DF %>% filter(Date=="2022-04-27")
+boost_pred <- predict(eur_boost,Apr_27_22)
+postResample(boost_pred,Apr_27_22$EUR)
+
+today <- Forex_EUR_Leads_DF %>% filter(Date==Sys.Date())
+boost_pred <- predict(eur_boost,today)
+postResample(boost_pred,today$EUR)
+
+Jan_6_23 <- Forex_EUR_Leads_DF %>% filter(Date=="2023-01-06")
+boost_pred <- predict(eur_boost,Jan_6_23)
+postResample(boost_pred,Jan_6_23$EUR)
+```

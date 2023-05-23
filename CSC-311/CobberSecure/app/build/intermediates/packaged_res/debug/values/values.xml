@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="grey">#878787</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="alarm_enabled">Alarm Enabled</string>
+    <string name="alarm_noise">Alarm Noise</string>
+    <string name="alarm_volume">Alarm Volume</string>
+    <string name="all_notifications">All Notifications</string>
+    <string name="app_name">CobberSecure</string>
+    <string name="dangerous_area_notifications">Dangerous Area Notifications</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="date_optional">Date (Optional)</string>
+    <string name="emergency_notifications">Emergency Notifications</string>
+    <string name="flist_friend1_name">Name</string>
+    <string name="flist_friend2_name">Name</string>
+    <string name="flist_friend3_name">Name</string>
+    <string name="flist_friend4_name">Name</string>
+    <string name="flist_friend5_name">Name</string>
+    <string name="flist_ping_text"><u>Ping</u></string>
+    <string name="flist_search_text">Search</string>
+    <string name="flist_title_text">Friends List</string>
+    <string name="friend_notifications">Friend Notifications</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="incident_description_optional">Incident Description (Optional)</string>
+    <string name="incident_report">Incident Report</string>
+    <string name="location">Location</string>
+    <string name="location_address_optional">Location Address (Optional)</string>
+    <string name="no">No</string>
+    <string name="notifications_action_text">Action</string>
+    <string name="notifications_notif1_text">Name | Notification | Description</string>
+    <string name="notifications_notif2_text">Name | Notification | Description</string>
+    <string name="notifications_notif3_text">Name | Notification | Description</string>
+    <string name="notifications_notif4_text">Name | Notification | Description</string>
+    <string name="notifications_notif5_text">Name | Notification | Description</string>
+    <string name="notifications_title_text">Notifications</string>
+    <string name="options">Options</string>
+    <string name="placeholder">placeholder</string>
+    <string name="profile_bio">Biography/About Me</string>
+    <string name="profile_edit_bio">Change Biography/About Me</string>
+    <string name="profile_edit_img_select_text">Select Profile Picture from Below:</string>
+    <string name="profile_edit_profile_button_text">Edit Profile Information</string>
+    <string name="profile_email">name@cord.edu</string>
+    <string name="profile_fname">First Name</string>
+    <string name="profile_friendlist_button_text">Friend List</string>
+    <string name="profile_lname">Last Name</string>
+    <string name="profile_name">First Name Last Name</string>
+    <string name="the_alarm_is_a_loud_noise_that_you_can_play_to_attract_others_in_an_emergency">The Alarm is a loud noise that you can play to attract others in an emergency</string>
+    <string name="time_optional">Time (Optional)</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="type_of_incident">Type of Incident</string>
+    <string name="would_you_like_others_to_be_able_to_see_your_incident_description">Would you like others to be able to see your incident description?</string>
+    <string name="yes">Yes</string>
+    <style name="BUTTON">
+        <item name="android:background">#6A1220</item>
+        <item name="android:textColor">#000</item>
+    </style>
+    <style name="ICON">
+        <item name="android:background">#000</item>
+    </style>
+    <style name="SCREEN">
+        <item name="android:background">#FFF</item>
+    </style>
+    <style name="TEXT">
+        <item name="android:textColor">#000</item>
+    </style>
+    <style name="Theme.CobberSecure" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        
+        <item name="colorPrimary">#FDDE7F</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/black</item>
+        
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+</resources>

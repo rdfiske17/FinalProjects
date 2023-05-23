@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">CobberSecure</string>
+    <string name="the_alarm_is_a_loud_noise_that_you_can_play_to_attract_others_in_an_emergency">The Alarm is a loud noise that you can play to attract others in an emergency</string>
+    <string name="alarm_volume">Alarm Volume</string>
+    <string name="alarm_noise">Alarm Noise</string>
+    <string name="alarm_enabled">Alarm Enabled</string>
+    <string name="dangerous_area_notifications">Dangerous Area Notifications</string>
+    <string name="emergency_notifications">Emergency Notifications</string>
+    <string name="friend_notifications">Friend Notifications</string>
+    <string name="all_notifications">All Notifications</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="options">Options</string>
+    <string name="placeholder">placeholder</string>
+    <string name="incident_report">Incident Report</string>
+    <string name="type_of_incident">Type of Incident</string>
+    <string name="incident_description_optional">Incident Description (Optional)</string>
+    <string name="would_you_like_others_to_be_able_to_see_your_incident_description">Would you like others to be able to see your incident description?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="location">Location</string>
+    <string name="location_address_optional">Location Address (Optional)</string>
+    <string name="time_optional">Time (Optional)</string>
+    <string name="date_optional">Date (Optional)</string>
+
+    <string name="profile_fname">First Name</string>
+    <string name="profile_lname">Last Name</string>
+    <string name="profile_name">First Name Last Name</string> <!--Figuring out way to generate this automatically, may just create a name entry in the DB that this extracts from -RF-->
+    <string name="profile_email">name@cord.edu</string>
+    <string name="profile_bio">Biography/About Me</string>
+    <string name="profile_friendlist_button_text">Friend List</string>
+    <string name="profile_edit_profile_button_text">Edit Profile Information</string>
+    <string name="profile_edit_bio">Change Biography/About Me</string>
+    <string name="profile_edit_img_select_text">Select Profile Picture from Below:</string>
+
+    <string name="notifications_title_text">Notifications</string>
+    <string name="notifications_notif1_text">Name | Notification | Description</string>
+    <string name="notifications_notif2_text">Name | Notification | Description</string>
+    <string name="notifications_notif3_text">Name | Notification | Description</string>
+    <string name="notifications_notif4_text">Name | Notification | Description</string>
+    <string name="notifications_notif5_text">Name | Notification | Description</string>
+    <string name="notifications_action_text">Action</string>
+
+    <string name="flist_search_text">Search</string>
+    <string name="flist_title_text">Friends List</string>
+    <string name="flist_friend1_name">Name</string>
+    <string name="flist_friend2_name">Name</string>
+    <string name="flist_friend3_name">Name</string>
+    <string name="flist_friend4_name">Name</string>
+    <string name="flist_friend5_name">Name</string>
+    <string name="flist_ping_text"><u>Ping</u></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">MapsActivity</string>
+
+
+</resources>

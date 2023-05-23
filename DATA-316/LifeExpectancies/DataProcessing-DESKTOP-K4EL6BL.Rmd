@@ -1,0 +1,76 @@
+---
+title: "DATA_316_Final_Project_DataProcessing"
+author: "Riley Fiske, Emily Liddell"
+date: "2023-04-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+# Read in Datasets
+```{r}
+
+who <- read.csv("https://raw.githubusercontent.com/rdfiske17/DATA316FinalProject/main/Datasets/WHO.csv") %>%
+  mutate(country = X,
+         Year = X.1)
+gdp <- read.csv("https://raw.githubusercontent.com/rdfiske17/DATA316FinalProject/main/Datasets/human-development-index-vs-gdp-per-capita.csv") %>%
+  mutate(country = Entity)
+schooling <- read.csv("https://raw.githubusercontent.com/rdfiske17/DATA316FinalProject/main/Datasets/mean-years-of-schooling-long-run.csv") %>%
+    mutate(country = Entity)
+pip <- read.csv("https://raw.githubusercontent.com/rdfiske17/DATA316FinalProject/main/Datasets/pip_dataset.csv") %>%
+  mutate(Year = year)
+
+```
+
+
+# Merge Datasets
+```{r}
+
+agg_data <- merge(who, gdp, by = c("country","Year"))
+agg_data <- merge(agg_data, schooling, by = c("country","Year"))
+agg_data <- merge(agg_data, schooling, by = c("country","Year"))
+agg_data <- merge(agg_data, pip, by = c("country","Year"))
+```
+
+
+# Filter by year and reporting level (China had 3), then separate by sex and bind datasets together and write the file
+```{r}
+
+agg_data <- agg_data %>%
+  filter(Year == 2015,
+         ppp_version == 2017,
+         reporting_level == "national")
+
+agg_data_male <- agg_data %>%
+  dplyr::select(country, Year, Life.expectancy.at.birth..years..1, GDP.per.capita..PPP..constant.2017.international..., Population..historical.estimates., Human.Development.Index, headcount_ratio_international_povline, Average.Total.Years.of.Schooling.for.Adult.Population..Lee.Lee..2016...Barro.Lee..2018..and.UNDP..2018...x) %>%
+  mutate(sex = "Male") %>%
+  rename(life_expectancy = Life.expectancy.at.birth..years..1,
+         gdp_per_capita = GDP.per.capita..PPP..constant.2017.international...,
+         population = Population..historical.estimates.,
+         hdi = Human.Development.Index,
+         ratio_below_povline = headcount_ratio_international_povline,
+         schooling_years = Average.Total.Years.of.Schooling.for.Adult.Population..Lee.Lee..2016...Barro.Lee..2018..and.UNDP..2018...x)
+
+agg_data_female <- agg_data %>%
+  dplyr::select(country, Year, Life.expectancy.at.birth..years..2, GDP.per.capita..PPP..constant.2017.international..., Population..historical.estimates., Human.Development.Index, headcount_ratio_international_povline, Average.Total.Years.of.Schooling.for.Adult.Population..Lee.Lee..2016...Barro.Lee..2018..and.UNDP..2018...x) %>%
+  mutate(sex = "Female") %>%
+  rename(life_expectancy = Life.expectancy.at.birth..years..2,
+         gdp_per_capita = GDP.per.capita..PPP..constant.2017.international...,
+         population = Population..historical.estimates.,
+         hdi = Human.Development.Index,
+         ratio_below_povline = headcount_ratio_international_povline,
+         schooling_years = Average.Total.Years.of.Schooling.for.Adult.Population..Lee.Lee..2016...Barro.Lee..2018..and.UNDP..2018...x)
+
+final_data <- rbind(agg_data_male, agg_data_female) %>%
+  arrange(country) %>%
+  filter(case_when(country == "Philippines" ~ ratio_below_povline > 8,
+                   country == "Poland" ~ ratio_below_povline > 0,
+                   country == "Serbia" ~ ratio_below_povline > 0.08,
+                   TRUE ~ ratio_below_povline >= 0))
+
+write_csv(final_data, file="life_expectancy_data.csv", append = FALSE)
+
+```

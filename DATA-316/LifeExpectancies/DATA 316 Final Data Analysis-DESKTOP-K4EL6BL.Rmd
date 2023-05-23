@@ -1,0 +1,184 @@
+---
+title: "DATA_316_Final_Project"
+author: "Riley Fiske, Emily Liddell"
+date: "2023-04-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+#read in the data 
+life_data <- read.csv("https://raw.githubusercontent.com/rdfiske17/DATA316FinalProject/main/Datasets/life_expectancy_data.csv")
+
+#Visualize the data
+ggplot(data = life_data) +
+  geom_jitter(aes(x = gdp_per_capita, y = life_expectancy, color = sex))
+
+ggplot(data = life_data) +
+  geom_jitter(aes(x = hdi, y = life_expectancy, color = sex))
+
+ggplot(data = life_data) +
+  geom_histogram(aes(x = gdp_per_capita))
+
+ggplot(data = life_data) +
+  geom_histogram(aes(x = population))
+
+ggplot(data = life_data) +
+  geom_histogram(aes(x = log(population)))
+
+ggplot(data = life_data) +
+  geom_jitter(aes(x = schooling_years, y = life_expectancy, color = sex))
+
+ggplot(data = life_data) +
+  geom_histogram(aes(x = ratio_below_povline))
+
+ggplot(data = life_data) +
+  geom_histogram(aes(x = log(ratio_below_povline)))
+#Most of the data looks linear, so we will use a linear model
+
+#now visualize for countries
+
+ggplot(data = life_data) +
+  geom_point(aes(x = life_expectancy, y = fct_reorder(country,life_expectancy), color = sex)) +
+  labs(title= "Figure 1. Life Expectancy per Country",x = "Life Expectancy", y = "Country")+
+  theme(axis.title.x=element_text(size = 22),
+        axis.title.y=element_text(size = 22),
+        title=element_text(size = 18),
+        panel.background = element_rect(fill = "white",
+                                colour = "white",
+                                size = 0.5, linetype = "solid"))
+
+ggsave(filename = "country_life_expectancy.png", width = 200, height = 300, units = "mm", dpi = 700, limitsize = FALSE)
+
+ggplot(data = life_data) +
+  geom_point(aes(x = gdp_per_capita, y = fct_reorder(country,gdp_per_capita)))
+
+ggplot(data = life_data) +
+  geom_point(aes(x = ratio_below_povline, y = fct_reorder(country,-ratio_below_povline)))
+
+```
+
+
+#Create the models
+```{r}
+
+mod.1 <- lm(life_expectancy ~ -1 + gdp_per_capita + hdi + population + ratio_below_povline + schooling_years + as.factor(sex), data = life_data)
+summary(mod.1)
+
+mod.2 <- lm(life_expectancy ~ -1 + gdp_per_capita + hdi + population + ratio_below_povline + schooling_years, data = life_data)
+summary(mod.2)
+
+#We removed HDI because it uses life expectancy as an input into its calculation
+mod.3 <- lm(life_expectancy ~ -1 + gdp_per_capita + population + ratio_below_povline + schooling_years + as.factor(sex), data = life_data)
+summary(mod.3)
+
+#We removed population because both gdp and ratio below the povline use population as a part of calculating them
+mod.4 <- lm(life_expectancy ~ -1 + gdp_per_capita + ratio_below_povline + schooling_years + as.factor(sex), data = life_data)
+summary(mod.4)
+
+
+#This is the final model
+mod.5 <- lm(life_expectancy ~ -1 + log(gdp_per_capita) + log(ratio_below_povline + .01) + schooling_years + as.factor(sex), data = life_data)
+summary(mod.5)
+
+life.expectancy.model <- lm(life_expectancy ~ -1 + gdp_per_capita + log(ratio_below_povline + 0.01) + schooling_years + as.factor(sex), data = life_expectancy)
+
+#actual R squared
+cor(life_data$life_expectancy, predict(mod.5))^2
+1-var(residuals(mod.5))/var(life_data$life_expectancy)
+
+```
+
+
+#Final visualizations
+```{r}
+#Visualize the model against the data
+
+#Set up functions for the linear lines with male and female versions and everything held constant except the variable of interest.
+GDPlineF <- function(x){coef(life.expectancy.model)[1]*x + coef(life.expectancy.model)[2]*mean(log(life_expectancy$ratio_below_povline+0.01)) + coef(life.expectancy.model)[3]*mean(life_expectancy$schooling_years) + coef(life.expectancy.model)[4]}
+
+GDPlineM <- function(x){coef(life.expectancy.model)[1]*x + coef(life.expectancy.model)[2]*mean(log(life_expectancy$ratio_below_povline+0.01)) + coef(life.expectancy.model)[3]*mean(life_expectancy$schooling_years) + coef(life.expectancy.model)[5]}
+
+ratiolineF <- function(x){coef(life.expectancy.model)[1]*mean(life_expectancy$gdp_per_capita) + coef(life.expectancy.model)[2]*x + coef(life.expectancy.model)[3]*mean(life_expectancy$schooling_years) + coef(life.expectancy.model)[4]}
+
+ratiolineM <- function(x){coef(life.expectancy.model)[1]*mean(life_expectancy$gdp_per_capita) + coef(life.expectancy.model)[2]*x + coef(life.expectancy.model)[3]*mean(life_expectancy$schooling_years) + coef(life.expectancy.model)[5]}
+
+schoollineF <- function(x){coef(life.expectancy.model)[1]*mean(life_expectancy$gdp_per_capita) + coef(life.expectancy.model)[2]*mean(log(life_expectancy$ratio_below_povline+0.01)) + coef(life.expectancy.model)[3]*x + coef(life.expectancy.model)[4]}
+
+schoollineM <- function(x){coef(life.expectancy.model)[1]*mean(life_expectancy$gdp_per_capita) + coef(life.expectancy.model)[2]*mean(log(life_expectancy$ratio_below_povline+0.01)) + coef(life.expectancy.model)[3]*x + coef(life.expectancy.model)[5]}
+
+
+#Visualize the lines with the data
+ggplot(life_data, aes(x = gdp_per_capita, y = life_expectancy)) +
+  geom_jitter(aes(color = sex)) +
+  geom_function(fun = GDPlineF, aes(color = "Female")) +
+  geom_function(fun = GDPlineM, aes(color = "Male"))
+
+ggplot(life_data, aes(x = log(ratio_below_povline), y = life_expectancy)) +
+  geom_jitter(aes(color = sex)) +
+  geom_function(fun = ratiolineF, aes(color = "Female")) +
+  geom_function(fun = ratiolineM, aes(color = "Male"))
+
+ggplot(life_data, aes(x = schooling_years, y = life_expectancy)) +
+  geom_jitter(aes(color = sex)) +
+  geom_function(fun = schoollineF, aes(color = "Female")) +
+  geom_function(fun = schoollineM, aes(color = "Male"))
+
+#Visualize the the predicted life expectancy against the actual life expectancies
+life_data$pred.1 <- predict(mod.5)
+
+ggplot(life_data, aes(y = life_expectancy, x =pred.1)) +
+  geom_jitter() +
+  geom_abline() +
+  labs(title= "Figure 2. Predicted Life Expectancy vs. Actual",x = "Predicted Life Expectancy", y = "Actual")+
+  theme(axis.title.x=element_text(size = 22),
+        axis.title.y=element_text(size = 22),
+        title=element_text(size = 18),
+        panel.background = element_rect(fill = "white",
+                                colour = "white",
+                                size = 0.5, linetype = "solid"))
+ggsave(filename = "pred_v_actual.png", width = 200, height = 150, units = "mm", dpi = 700, limitsize = FALSE)
+
+
+#Graph of the residuals
+life_data$pred.5 <- predict(mod.5)
+
+ggplot(data = life_data) +
+  geom_point(aes(x = pred.5, y = life_expectancy)) +
+  geom_abline()
+
+life_data$resid.5 <- life_data$life_expectancy - life_data$pred.5
+sigma <- sigma(mod.5)
+
+ggplot(life_data, aes(x=pred.5, y=resid.5)) +
+  geom_point() +
+  geom_hline(yintercept=0, color = "red") +
+  geom_hline(yintercept= c(sigma, -sigma), color="red", linetype="dashed") +
+  labs(title= "Figure 2. Predicted Life Expectancy vs. Residuals",x = "Predicted Life Expectancy", y = "Residuals")+
+  theme(axis.title.x=element_text(size = 22),
+        axis.title.y=element_text(size = 22),
+        title=element_text(size = 18),
+        panel.background = element_rect(fill = "white",
+                                colour = "white",
+                                size = 0.5, linetype = "solid"))
+
+ggsave(filename = "residuals.png", width = 200, height = 150, units = "mm", dpi = 700, limitsize = FALSE)
+```
+
+#US Prediction
+This is a prediction of lifeexpectancy in the US based on our model
+```{r}
+USdata <- data.frame(life_expectancy = 0, gdp_per_capita =70248, ratio_below_povline=11.6, schooling_years= 8.7 , sex = "Female")
+predict(mod.5, newdata = USdata)
+
+USdata <- data.frame(life_expectancy = 0, gdp_per_capita =70248, ratio_below_povline=11.6, schooling_years= 8.7 , sex = "Male")
+predict(mod.5, newdata = USdata)
+
+#Source for US life expectancy data https://www.worlddata.info/life-expectancy.php
+```
+
+

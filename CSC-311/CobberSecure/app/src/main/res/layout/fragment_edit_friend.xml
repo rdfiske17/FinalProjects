@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditFriendFragment">
+
+    <Switch
+        android:id="@+id/favorite_friend_switch"
+        android:layout_width="139dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="138dp"
+        android:layout_marginEnd="134dp"
+        android:layout_marginBottom="15dp"
+        android:text="Favorite Friend"
+        app:layout_constraintBottom_toTopOf="@+id/remove_friend_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/allow_ping_switch" />
+
+    <ImageView
+        android:id="@+id/friend_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="141dp"
+        android:layout_marginTop="132dp"
+        android:layout_marginEnd="142dp"
+        android:layout_marginBottom="26dp"
+        app:layout_constraintBottom_toTopOf="@+id/friend_name_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/friend_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="165dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="166dp"
+        android:layout_marginBottom="25dp"
+        android:text="Friend Name"
+        app:layout_constraintBottom_toTopOf="@+id/allow_ping_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friend_image" />
+
+    <Switch
+        android:id="@+id/allow_ping_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="157dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="134dp"
+        android:text="Allow Pings"
+        app:layout_constraintBottom_toTopOf="@+id/favorite_friend_switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/friend_name_label" />
+
+    <Button
+        android:id="@+id/remove_friend_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="128dp"
+        android:layout_marginBottom="260dp"
+        android:text="Remove Friend"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/favorite_friend_switch" />
+</androidx.constraintlayout.widget.ConstraintLayout>

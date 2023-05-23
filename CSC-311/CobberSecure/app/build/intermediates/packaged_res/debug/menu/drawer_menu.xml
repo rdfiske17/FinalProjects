@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/homeFragement"
+            android:title="Home" />
+        <item
+            android:id="@+id/mapFragment"
+            android:title="Map" />
+        <item
+            android:id="@+id/profileFragment"
+            android:title="Profile" />
+        <item
+            android:id="@+id/friendListFragment"
+            android:title="Friends" />
+        <item
+            android:id="@+id/notificationsFragment"
+            android:title="Notifications" />
+        <item
+            android:id="@+id/resourcesFragment"
+            android:title="Resources" />
+        <item
+            android:id="@+id/reportIncidentFragment"
+            android:title="Report Incident" />
+        <item
+            android:id="@+id/settingsFragment"
+            android:title="Settings" />
+
+
+    </group>
+
+</menu>

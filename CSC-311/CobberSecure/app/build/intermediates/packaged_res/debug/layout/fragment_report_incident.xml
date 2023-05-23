@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/IncidentReportTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:text="@string/incident_report"
+                style = "@style/TEXT"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/TypeOfIncidentText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/type_of_incident"
+                style = "@style/TEXT"
+                android:textSize="24sp" />
+
+            <Spinner
+                android:id="@+id/TypeOfIncidentSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/placeholder"
+                android:minHeight="48dp" />
+
+            <EditText
+                android:id="@+id/IncidentDescription"
+                android:layout_width="375dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:autofillHints=""
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/incident_description_optional"
+                style = "@style/TEXT"
+                android:inputType="textMultiLine"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/ShareIncidentDescQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:text="@string/would_you_like_others_to_be_able_to_see_your_incident_description"
+                style = "@style/TEXT"
+                android:textSize="24sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/YesButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    style = "@style/TEXT"/>
+
+                <RadioButton
+                    android:id="@+id/NoButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    style = "@style/TEXT"/>
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/LocationText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="@string/location"
+                style = "@style/TEXT"/>
+
+            <Spinner
+                android:id="@+id/LocationSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/placeholder"
+                android:minHeight="48dp" />
+
+            <EditText
+                android:id="@+id/IncidentAddress"
+                android:layout_width="375dp"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/location_address_optional"
+                android:inputType="textPostalAddress"
+                android:minHeight="48dp" />
+
+            <EditText
+                android:id="@+id/IncidentTime"
+                android:layout_width="375dp"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/time_optional"
+                android:inputType="time"
+                android:minHeight="48dp" />
+
+            <EditText
+                android:id="@+id/IncidentDate"
+                android:layout_width="375dp"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:hint="@string/date_optional"
+                android:inputType="date"
+                android:minHeight="48dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

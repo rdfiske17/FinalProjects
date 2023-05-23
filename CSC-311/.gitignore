@@ -1,0 +1,7 @@
+local.properties
+app/build/intermediates/variant_model/debug/variant_model.json
+app/build/intermediates/packaged_manifests/debug/AndroidManifest.xml
+app/build/intermediates/merged_manifests/debug/AndroidManifest.xml
+app/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+app/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+app/build/generated/source/buildConfig/debug/com/example/cobbersecure/BuildConfig.java

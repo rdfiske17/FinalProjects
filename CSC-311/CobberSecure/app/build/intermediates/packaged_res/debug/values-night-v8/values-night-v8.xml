@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BUTTON">
+        <item name="android:background">#6A1220</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+    <style name="ICON">
+        <item name="android:background">#FFF</item>
+    </style>
+    <style name="SCREEN">
+        <item name="android:background">#000</item>
+    </style>
+    <style name="TEXT">
+        <item name="android:textColor">#FFF</item>
+    </style>
+    <style name="Theme.CobberSecure" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        
+        <item name="colorPrimary">#6A1220</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">#FFF</item>
+        
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        
+    </style>
+</resources>

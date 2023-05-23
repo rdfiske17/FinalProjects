@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragment">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:orientation="horizontal">
+
+            <!--Each image button will set the profile picture to itself when selected-->
+
+            <ImageView
+                android:id="@+id/home_notifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:focusable="true"
+                android:clickable="true"
+                app:tint="@color/grey"
+                app:srcCompat="@drawable/bell" />
+
+            <ImageView
+                android:id="@+id/home_alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:focusable="true"
+                android:clickable="true"
+                app:tint="@color/grey"
+                app:srcCompat="@drawable/alarm" />
+
+            <ImageView
+                android:id="@+id/home_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:focusable="true"
+                android:clickable="true"
+                app:tint="@color/grey"
+                app:srcCompat="@drawable/settings" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/home_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:gravity="center"
+            android:text="CobberSecure"
+            android:textSize="24sp"
+            style = "@style/TEXT"
+            />
+
+        <Button
+            android:id="@+id/home_campus_security"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Campus Security" />
+
+        <Button
+            android:id="@+id/home_911"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="911" />
+
+        <Button
+            android:id="@+id/home_fire_dept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Fire Department" />
+
+        <Button
+            android:id="@+id/home_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Map" />
+
+        <Button
+            android:id="@+id/home_resources"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Resources" />
+
+        <Button
+            android:id="@+id/home_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Login" />
+
+        <Button
+            android:id="@+id/home_friendpage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Friend Page" />
+
+        <Button
+            android:id="@+id/home_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Profile" />
+
+        <Button
+            android:id="@+id/home_report_incident"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Report Incident" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/OptionsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:text="@string/options"
+        style = "@style/TEXT"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/darkModeSwitch"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/dark_mode"
+        />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/allNotificationsSwitch"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/all_notifications"
+        />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/friendsNotificationsSwitch"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/friend_notifications"
+        />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/emergencyNotificationsSwitch"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/emergency_notifications"
+        />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/dangerousAreaNotificationsSwitch"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/dangerous_area_notifications"
+        />
+
+    <!--<androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/alarmSwitch"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="@string/alarm_enabled"
+        />-->
+
+    <TextView
+        android:id="@+id/AlarmDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/the_alarm_is_a_loud_noise_that_you_can_play_to_attract_others_in_an_emergency"
+        android:paddingBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/alarmVolumeDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/alarm_volume"
+        android:paddingBottom="10dp"/>
+
+    <SeekBar
+        android:id="@+id/alarmVolumeSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+   <!-- <TextView
+        android:id="@+id/alarmNoiseDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/alarm_noise"
+        android:paddingBottom="10dp"/>
+
+    <Spinner
+        android:id="@+id/alarmNoiseSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/placeholder"
+        android:minHeight="48dp" />-->
+    <Button
+        android:id="@+id/settings_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Log-in" />
+
+
+</LinearLayout>

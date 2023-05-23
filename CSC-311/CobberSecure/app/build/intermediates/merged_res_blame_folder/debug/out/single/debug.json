@@ -1,0 +1,146 @@
+[
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_friend_list.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_friend_list.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/drawable_alarm.png.flat",
+        "source": "com.example.cobbersecure.app-main-58:/drawable/alarm.png"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_notifications.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_notifications.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_home.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/drawable_bell.png.flat",
+        "source": "com.example.cobbersecure.app-main-58:/drawable/bell.png"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-anydpi-v33_ic_launcher.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-anydpi-v33/ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_settings.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_settings.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/navigation_nav_graph.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/navigation/nav_graph.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_profile_edit.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_profile_edit.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_map.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_map.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_report_incident.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_report_incident.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_activity_main.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/menu_drawer_menu.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/menu/drawer_menu.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_profile.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_profile.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_edit_friend.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_edit_friend.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/xml_backup_rules.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/drawable_settings.png.flat",
+        "source": "com.example.cobbersecure.app-main-58:/drawable/settings.png"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_activity_maps.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/activity_maps.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.cobbersecure.app-main-58:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/raw_alarm.mp3.flat",
+        "source": "com.example.cobbersecure.app-main-58:/raw/alarm.mp3"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_resources.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_resources.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/layout_fragment_login.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/layout/fragment_login.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.example.cobbersecure.app-merged_res-56:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "com.example.cobbersecure.app-main-58:/drawable-v24/ic_launcher_foreground.xml"
+    }
+]

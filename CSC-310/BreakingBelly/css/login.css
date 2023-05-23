@@ -1,0 +1,151 @@
+:root {
+    --color1: white;
+
+    --formWidth: 35%;
+    --contentsWidth: 70%;
+}
+
+.container {
+    padding-bottom: 100px;
+}
+
+.loginForm {
+    border: var(--Color6) solid 1px;
+    border-radius: 25px;
+    width: var(--formWidth);
+
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.title {
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+}
+
+.content-flexbox1 {
+    display: flex;
+    width: var(--contentsWidth);
+
+    /*border: white solid 1px;*/
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+.content-flexbox1 button {
+    height: 28px;
+    width: 65px;
+    border: none;
+
+    cursor: pointer;
+    transition: ease 0.3s;
+}
+
+button span {
+    display: none;
+}
+
+.signInButton {
+    background: transparent;
+    background-image: url(../images/breakingBad-29.png);
+    background-repeat: no-repeat;
+}
+
+.signUpButton {
+    background: transparent;
+    background-image: url(../images/breakingBad-30.png);
+    background-repeat: no-repeat;
+}
+
+.signUpButton:hover {
+    background: transparent;
+    background-image: url(../images/breakingBad-31.png);
+    background-repeat: no-repeat;
+}
+
+.content-flexbox2 {
+    display: flex;
+    /*border: white solid 1px;*/
+    flex-direction: column;
+
+    width: var(--contentsWidth);
+    margin: 0 auto;
+}
+
+.content-flexbox2 input {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: transparent;
+    text-indent: 10px;
+
+    border: var(--Color6) solid 1px;
+    border-radius: 10px;
+
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* https://www.w3schools.com/howto/howto_css_placeholder.asp */
+::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: var(--Color6);
+    opacity: 1;
+    /* Firefox */
+}
+
+:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: var(--Color6);
+}
+
+::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: var(--Color6);
+}
+
+.content-flexbox3 {
+    display: flex;
+    /*border: var(--Color6) solid 1px;*/
+    flex-direction: column;
+
+    width: var(--contentsWidth);
+    margin: 0 auto;
+    margin-bottom: 40px;
+}
+
+.nested-content-flexbox3 {
+    display: flex;
+    font-size: .75em;
+}
+
+.nested-content-flexbox3 [type=checkbox] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
+}
+
+.nested-content-flexbox3 label {
+    display: block;
+}
+
+.forgot {
+    margin-left: 5%;
+    margin-top: 2px;
+}
+
+.submitButton {
+    height: 40px;
+    width: 100px;
+    border: none;
+
+    cursor: pointer;
+
+    background: transparent;
+    background-image: url(../images/breakingBad-32.png);
+    background-repeat: no-repeat;
+
+    margin-top: 40px;
+}

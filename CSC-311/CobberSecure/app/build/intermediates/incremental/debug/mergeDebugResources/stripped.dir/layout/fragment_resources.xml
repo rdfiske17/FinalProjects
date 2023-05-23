@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileEditFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="543dp"
+        android:layout_margin="15dp"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <Button
+            android:id="@+id/carrercenter_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Career Center" />
+
+        <Button
+            android:id="@+id/css_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Center for Student Success" />
+
+        <Button
+            android:id="@+id/title9_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title IX" />
+
+        <Button
+            android:id="@+id/cobbernet_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cobbernet" />
+
+        <Button
+            android:id="@+id/handbook_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Student  Handbook" />
+    </LinearLayout>
+
+</FrameLayout>

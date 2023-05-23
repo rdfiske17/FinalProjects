@@ -1,0 +1,37 @@
+/* PAGE CONTENT */
+.content-flexbox1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.content-flexbox1-item1 {
+    margin-left: 7%;
+    margin-top: 70px;
+}
+
+.content-flexbox1-item1 img{
+    margin-top:20px;
+    margin-bottom:20px;
+}
+
+.content-flexbox1-subtitle {
+    font-size: 1.35em;
+}
+
+.content-flexbox1 button {
+        background: transparent;    
+        background-image: url(../images/shopNowButton-28.png);
+        background-repeat: no-repeat;
+        
+        height: 48px;
+        width: 168px;
+        border: none;
+
+        cursor: pointer;
+
+        margin-top: 35px;
+}
+
+.content-flexbox1 button span {
+    display: none;
+}

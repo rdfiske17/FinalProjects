@@ -1,0 +1,49 @@
+
+c{
+  font-size: 20px;
+  margin-left: 0;
+}
+d{
+font-size: 20px;
+float: right;
+}
+
+.checkoutHeader{
+	font-size: 36px;
+	width: 85%;
+	margin-left: 0%;
+	border: 5px solid#ccc;
+	border-radius: 15px;
+}
+.subtotal{
+  width: 25%;
+  margin-top: -60%;
+  margin-right: 5%;
+  float: right;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+  input[type=text] {
+    width: 40%;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    margin-left: 15px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    background-color: grey;
+    border-radius: 3px;
+  }
+  
+  label {
+    margin-left: 15px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+::placeholder{
+  color: white;
+  align-items: center;
+}
+  
+

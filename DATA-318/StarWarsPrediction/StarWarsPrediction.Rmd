@@ -1,0 +1,380 @@
+---
+title: "DATA_318_Project01"
+author: "Riley Fiske"
+date: "2/19/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('tidyverse')
+library('caret')
+```
+
+## Project Description
+This project will use survey data from a survey put out by Fivethirtyeight.com regarding Star Wars film viewership and opinions. This project will create linear and logistic regression models, taking in the Gender, Age, Household Income, Education, and Location to determine their opinions on each of the Star Wars films ranking-wise.
+
+## Data Input and Setup
+
+```{r}
+column_names <- c("ID","Seen_SW","Fan_of_SW","na1","na2","na3","na4","na5","na6","Rank_Ep1","Rank_Ep2","Rank_Ep3","Rank_Ep4","Rank_Ep5","Rank_Ep6",
+                   "na7,","na8","na9","na10","na11","na12,","na13","na14","na15","na16","na17","na18","na19","na20","na21","na22","na23","na24",
+                   "Gender","Age","Household_Income","Education","Location")
+Star_Wars_DF = read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/star-wars-survey/StarWars.csv",stringsAsFactors = TRUE)  %>%
+  filter(!is.na(`RespondentID`)) 
+
+colnames(Star_Wars_DF) <- column_names
+Star_Wars_DF <- select(Star_Wars_DF,!starts_with("na")) %>%
+  filter(Seen_SW != "No" & Fan_of_SW != "No") %>%
+  select(!Fan_of_SW & !Seen_SW) %>%
+  filter(Rank_Ep3 != "" & Gender != "" & Age != "" & Household_Income != "" & Education != "" & Location != "") %>%
+  droplevels() %>%
+  mutate(Location = fct_collapse(Location,`East North Central` = "East South Central")) %>%
+  mutate(Location = fct_collapse(Location,`East North Central` = "Middle Atlantic")) %>%
+  mutate(Location = fct_collapse(Location,`East North Central` = "New England")) %>%
+  mutate(Location = fct_collapse(Location,`East North Central` = "South Atlantic")) %>% 
+  mutate(Location = fct_collapse(Location,`West North Central` = "West South Central")) %>%
+  mutate(Location = fct_collapse(Location, `Mountain` = "West North Central")) %>%
+  mutate(Household_Income = fct_collapse(Household_Income, `$0 - $24,999` = "$25,000 - $49,999")) %>%
+  mutate(Household_Income = fct_collapse(Household_Income, `$100,000 - $149,999` = "$150,000+")) %>%
+  mutate(Education = fct_collapse(Education, `High school degree` = "Less than high school degree")) %>%
+  mutate(Education = fct_collapse(Education, `High school degree` = "Some college or Associate degree"))
+  
+levels(Star_Wars_DF$Location) <- c("East","West","Central")
+levels(Star_Wars_DF$Household_Income) <- c("$0-$49,999","$100,000+","$50,000-$99,999")
+levels(Star_Wars_DF$Education) <- c("Bachelor Degree","Graduate Degree","Less than Bachelors")
+```
+
+## Numerical and Graphical Representations of Data
+```{r}
+
+##https://rkabacoff.github.io/datavis/Univariate.html used to create the Pie Charts
+
+summary(Star_Wars_DF$Age)
+
+counted_gender <- count(Star_Wars_DF,Gender) %>%
+  arrange(desc(Gender)) %>%
+  mutate(Rate = round(n*100 / sum(n),1),
+         lab.ypos = cumsum(Rate) - 0.5*Rate)
+counted_age <- count(Star_Wars_DF,Age) %>%
+  arrange(desc(Age)) %>%
+  mutate(Rate = round(n*100 / sum(n),1),
+         lab.ypos = cumsum(Rate) - 0.5*Rate)
+counted_household_income <- count(Star_Wars_DF,Household_Income) %>%
+  arrange(desc(Household_Income)) %>%
+  mutate(Rate = round(n*100 / sum(n),1),
+         lab.ypos = cumsum(Rate) - 0.5*Rate)
+counted_education <- count(Star_Wars_DF,Education) %>%
+  arrange(desc(Education)) %>%
+  mutate(Rate = round(n*100 / sum(n),1),
+         lab.ypos = cumsum(Rate) - 0.5*Rate)
+counted_location <- count(Star_Wars_DF,Location) %>%
+  arrange(desc(Location)) %>%
+  mutate(Rate = round(n*100 / sum(n),1),
+         lab.ypos = cumsum(Rate) - 0.5*Rate)
+
+ggplot(counted_gender,mapping = aes(x="",y=Rate,fill=Gender)) +
+  geom_bar(width=1,stat="identity") +
+  coord_polar("y",start=0,direction=-1) +
+  geom_text(aes(y=lab.ypos,label=paste0(Gender, "\n",
+                         round(Rate), "%"))) +
+  theme_void() +
+  theme(legend.position="FALSE") +
+  labs(title="Gender")
+
+ggplot(counted_age,mapping = aes(x="",y=Rate,fill=Age)) +
+  geom_bar(width=1,stat="identity") +
+  coord_polar("y",start=0,direction=-1) +
+  geom_text(aes(y=lab.ypos,label=paste0(Age, "\n",
+                         round(Rate), "%"))) +
+  theme_void() +
+  theme(legend.position="FALSE") +
+  labs(title="Age")
+
+ggplot(counted_household_income,mapping = aes(x="",y=Rate,fill=Household_Income)) +
+  geom_bar(width=1,stat="identity") +
+  coord_polar("y",start=0,direction=-1) +
+  geom_text(aes(y=lab.ypos,label=paste0(Household_Income, "\n",
+                         round(Rate), "%"))) +
+  theme_void() +
+  theme(legend.position="FALSE") +
+  labs(title="Household Income")
+
+ggplot(counted_education,mapping = aes(x="",y=Rate,fill=Education)) +
+  geom_bar(width=1,stat="identity") +
+  coord_polar("y",start=0,direction=-1) +
+  geom_text(aes(y=lab.ypos,label=paste0(Education, "\n",
+                         round(Rate), "%"))) +
+  theme_void() +
+  theme(legend.position="FALSE") +
+  labs(title="Education")
+
+ggplot(counted_location,mapping = aes(x="",y=Rate,fill=Location)) +
+  geom_bar(width=1,stat="identity") +
+  coord_polar("y",start=0,direction=-1) +
+  geom_text(aes(y=lab.ypos,label=paste0(Location, "\n",
+                         round(Rate), "%"))) +
+  theme_void() +
+  theme(legend.position="FALSE") +
+  labs(title="Location (United States)")
+
+#Gender, Education, and Age
+ggplot(Star_Wars_DF) +
+  geom_jitter(aes(x=Gender,y=Education,color=Age))
+#Location and Income
+ggplot(Star_Wars_DF) +
+  geom_bar(aes(x=Location,fill=Household_Income))
+#Ranking of Ep1 versus ranking of Ep2
+ggplot(Star_Wars_DF) +
+  geom_bin2d(aes(x=Rank_Ep1,y=Rank_Ep2))
+#Ranking of Ep1 versus ranking of Ep3
+ggplot(Star_Wars_DF) +
+  geom_bin2d(aes(x=Rank_Ep1,y=Rank_Ep3))
+#Ranking of Ep2 versus ranking of Ep3
+ggplot(Star_Wars_DF) +
+  geom_bin2d(aes(x=Rank_Ep2,y=Rank_Ep3))
+#Jitter of Original Trilogy Films
+ggplot(Star_Wars_DF) +
+  geom_jitter(aes(x=Rank_Ep5,y=Rank_Ep4,color=Rank_Ep6))
+#Jitter of Prequel Trilogy Films
+ggplot(Star_Wars_DF) +
+  geom_jitter(aes(x=Rank_Ep1,y=Rank_Ep2,color=Rank_Ep3))
+
+ggplot(Star_Wars_DF, mapping = aes(x=Rank_Ep6,y=Age)) +
+  geom_bin2d()
+```
+
+## Set up Dummy Variables for Categorical Variables
+```{r}
+Star_Wars_DF <- fastDummies::dummy_cols(Star_Wars_DF,select_columns = c("Gender","Age","Household_Income","Education","Location")) %>%
+  select(!Gender & !Age & !Household_Income & !Education & !Location & !ID)
+```
+
+## Set up for Linear Regression Model
+
+```{r}
+options(warn = -1)
+
+set.seed(42)
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep1, p = 0.20, list = FALSE)
+test_set1 <- Star_Wars_DF[test_index,]
+train_set1 <- Star_Wars_DF[-test_index,]
+
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep2, p = 0.20, list = FALSE)
+test_set2 <- Star_Wars_DF[test_index,]
+train_set2 <- Star_Wars_DF[-test_index,]
+
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep3, p = 0.20, list = FALSE)
+test_set3 <- Star_Wars_DF[test_index,]
+train_set3 <- Star_Wars_DF[-test_index,]
+
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep4, p = 0.20, list = FALSE)
+test_set4 <- Star_Wars_DF[test_index,]
+train_set4 <- Star_Wars_DF[-test_index,]
+
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep5, p = 0.20, list = FALSE)
+test_set5 <- Star_Wars_DF[test_index,]
+train_set5 <- Star_Wars_DF[-test_index,]
+
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep6, p = 0.20, list = FALSE)
+test_set6 <- Star_Wars_DF[test_index,]
+train_set6 <- Star_Wars_DF[-test_index,]
+
+lin_reg_1 <- lm(Rank_Ep1 ~ .-Rank_Ep2 - Rank_Ep3 - Rank_Ep4 - Rank_Ep5 - Rank_Ep6,data=train_set1)
+lin_reg_2 <- lm(Rank_Ep2 ~ .-Rank_Ep1 - Rank_Ep3 - Rank_Ep4 - Rank_Ep5 - Rank_Ep6,data=train_set2)
+lin_reg_3 <- lm(Rank_Ep3 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep4 - Rank_Ep5 - Rank_Ep6,data=train_set3)
+lin_reg_4 <- lm(Rank_Ep4 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep3 - Rank_Ep5 - Rank_Ep6,data=train_set4)
+lin_reg_5 <- lm(Rank_Ep5 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep3 - Rank_Ep4 - Rank_Ep6,data=train_set5)
+lin_reg_6 <- lm(Rank_Ep6 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep3 - Rank_Ep4 - Rank_Ep5,data=train_set6)
+```
+
+## Run predictions for Linear Regression
+
+```{r}
+options(warn = -1)
+
+
+##divided 1,2,3,4,5,6 of length 5 into 6 equal sized intervals for the confusion matrix
+print("The Phantom Menace Confusion Matrix")
+phat <- predict(lin_reg_1,newdata = test_set1)
+confusionMatrix(data=factor(if_else(phat <= 6 & phat>= (31/6) , 6,
+                                    if_else(phat <= (31/6) & phat >= (13/3), 5,
+                                            if_else(phat <= (13/3) & phat >= (3.5), 4,
+                                                    if_else(phat <= 3.5 & phat >= (8/3), 3,
+                                                            if_else(phat <= (8/3) & phat >= (11/6), 2,
+                                                                    if_else(phat <= (11/6),1,NA_real_))))))), reference=factor(test_set1$Rank_Ep1))
+print("Attack of the Clones Confusion Matrix")
+phat <- predict(lin_reg_2,newdata = test_set2)
+confusionMatrix(data=factor(if_else(phat <= 6 & phat>= (31/6) , 6,
+                                    if_else(phat <= (31/6) & phat >= (13/3), 5,
+                                            if_else(phat <= (13/3) & phat >= (3.5), 4,
+                                                    if_else(phat <= 3.5 & phat >= (8/3), 3,
+                                                            if_else(phat <= (8/3) & phat >= (11/6), 2,
+                                                                    if_else(phat <= (11/6),1,NA_real_))))))), reference=factor(test_set2$Rank_Ep2))
+print("Revenge of the Sith Confusion Matrix")
+phat <- predict(lin_reg_3,newdata = test_set3)
+confusionMatrix(data=factor(if_else(phat <= 6 & phat>= (31/6) , 6,
+                                    if_else(phat <= (31/6) & phat >= (13/3), 5,
+                                            if_else(phat <= (13/3) & phat >= (3.5), 4,
+                                                    if_else(phat <= 3.5 & phat >= (8/3), 3,
+                                                            if_else(phat <= (8/3) & phat >= (11/6), 2,
+                                                                  if_else(phat <= (11/6),1,NA_real_))))))), reference=factor(test_set3$Rank_Ep3))
+print("A New Hope Confusion Matrix")
+phat <- predict(lin_reg_4,newdata = test_set4)
+confusionMatrix(data=factor(if_else(phat <= 6 & phat>= (31/6) , 6,
+                                    if_else(phat <= (31/6) & phat >= (13/3), 5,
+                                            if_else(phat <= (13/3) & phat >= (3.5), 4,
+                                                    if_else(phat <= 3.5 & phat >= (8/3), 3,
+                                                            if_else(phat <= (8/3) & phat >= (11/6), 2,
+                                                                    if_else(phat <= (11/6),1,NA_real_))))))), reference=factor(test_set4$Rank_Ep4))
+print("The Empire Strikes Back Confusion Matrix")
+phat <- predict(lin_reg_5,newdata = test_set5)
+confusionMatrix(data=factor(if_else(phat <= 6 & phat>= (31/6) , 6,
+                                    if_else(phat <= (31/6) & phat >= (13/3), 5,
+                                            if_else(phat <= (13/3) & phat >= (3.5), 4,
+                                                    if_else(phat <= 3.5 & phat >= (8/3), 3,
+                                                            if_else(phat <= (8/3) & phat >= (11/6), 2,
+                                                                    if_else(phat <= (11/6),1,NA_real_))))))), reference=factor(test_set5$Rank_Ep5))
+print("Return of the Jedi Confusion Matrix")
+phat <- predict(lin_reg_6,newdata = test_set6)
+confusionMatrix(data=factor(if_else(phat <= 6 & phat>= (31/6) , 6,
+                                    if_else(phat <= (31/6) & phat >= (13/3), 5,
+                                            if_else(phat <= (13/3) & phat >= (3.5), 4,
+                                                    if_else(phat <= 3.5 & phat >= (8/3), 3,
+                                                            if_else(phat <= (8/3) & phat >= (11/6), 2,
+                                                                    if_else(phat <= (11/6),1,NA_real_))))))), reference=factor(test_set6$Rank_Ep6))
+```
+## Set up Logisitic Regression (Collapse from 1-6 to top ranking or bottom ranking, redefine train and test sets, run log_reg)
+
+```{r}
+Star_Wars_DF <- mutate(Star_Wars_DF,Rank_Ep1 = fct_collapse(Rank_Ep1, `1` = "2")) %>%
+  mutate(Rank_Ep1 = fct_collapse(Rank_Ep1,`1` = "3")) %>%
+  mutate(Rank_Ep1 = fct_collapse(Rank_Ep1,`4` = "5")) %>%
+  mutate(Rank_Ep1 = fct_collapse(Rank_Ep1,`4` = "6")) %>%
+  mutate(Rank_Ep2 = fct_collapse(Rank_Ep2,`1` = "2")) %>%
+  mutate(Rank_Ep2 = fct_collapse(Rank_Ep2,`1` = "3")) %>%
+  mutate(Rank_Ep2 = fct_collapse(Rank_Ep2,`4` = "5")) %>%
+  mutate(Rank_Ep2 = fct_collapse(Rank_Ep2,`4` = "6")) %>%
+  mutate(Rank_Ep3 = fct_collapse(Rank_Ep3,`1` = "2")) %>%
+  mutate(Rank_Ep3 = fct_collapse(Rank_Ep3,`1` = "3")) %>%
+  mutate(Rank_Ep3 = fct_collapse(Rank_Ep3,`4` = "5")) %>%
+  mutate(Rank_Ep3 = fct_collapse(Rank_Ep3,`4` = "6")) %>%
+  mutate(Rank_Ep4 = fct_collapse(Rank_Ep4,`1` = "2")) %>%
+  mutate(Rank_Ep4 = fct_collapse(Rank_Ep4,`1` = "3")) %>%
+  mutate(Rank_Ep4 = fct_collapse(Rank_Ep4,`4` = "5")) %>%
+  mutate(Rank_Ep4 = fct_collapse(Rank_Ep4,`4` = "6")) %>%
+  mutate(Rank_Ep5 = fct_collapse(Rank_Ep5,`1` = "2")) %>%
+  mutate(Rank_Ep5 = fct_collapse(Rank_Ep5,`1` = "3")) %>%
+  mutate(Rank_Ep5 = fct_collapse(Rank_Ep5,`4` = "5")) %>%
+  mutate(Rank_Ep5 = fct_collapse(Rank_Ep5,`4` = "6")) %>%
+  mutate(Rank_Ep6 = fct_collapse(Rank_Ep6,`1` = "2")) %>%
+  mutate(Rank_Ep6 = fct_collapse(Rank_Ep6,`1` = "3")) %>%
+  mutate(Rank_Ep6 = fct_collapse(Rank_Ep6,`4` = "5")) %>%
+  mutate(Rank_Ep6 = fct_collapse(Rank_Ep6,`4` = "6")) %>%
+  droplevels()
+levels(Star_Wars_DF$Rank_Ep1) <- c("Top 3","Bottom 3")
+levels(Star_Wars_DF$Rank_Ep2) <- c("Top 3","Bottom 3")
+levels(Star_Wars_DF$Rank_Ep3) <- c("Top 3","Bottom 3")
+levels(Star_Wars_DF$Rank_Ep4) <- c("Top 3","Bottom 3")
+levels(Star_Wars_DF$Rank_Ep5) <- c("Top 3","Bottom 3")
+levels(Star_Wars_DF$Rank_Ep6) <- c("Top 3","Bottom 3")
+
+set.seed(42)
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep1, p = 0.20, list = FALSE)
+test_set1 <- Star_Wars_DF[test_index,]
+train_set1 <- Star_Wars_DF[-test_index,]
+
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep2, p = 0.20, list = FALSE)
+test_set2 <- Star_Wars_DF[test_index,]
+train_set2 <- Star_Wars_DF[-test_index,]
+
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep3, p = 0.20, list = FALSE)
+test_set3 <- Star_Wars_DF[test_index,]
+train_set3 <- Star_Wars_DF[-test_index,]
+
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep4, p = 0.20, list = FALSE)
+test_set4 <- Star_Wars_DF[test_index,]
+train_set4 <- Star_Wars_DF[-test_index,]
+
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep5, p = 0.20, list = FALSE)
+test_set5 <- Star_Wars_DF[test_index,]
+train_set5 <- Star_Wars_DF[-test_index,]
+
+test_index <- createDataPartition(Star_Wars_DF$Rank_Ep6, p = 0.20, list = FALSE)
+test_set6 <- Star_Wars_DF[test_index,]
+train_set6 <- Star_Wars_DF[-test_index,]
+
+log_reg_1 <- glm(Rank_Ep1 ~ .-Rank_Ep2 - Rank_Ep3 - Rank_Ep4 - Rank_Ep5 - Rank_Ep6,data=train_set1,family=binomial)
+log_reg_2 <- glm(Rank_Ep2 ~ .-Rank_Ep1 - Rank_Ep3 - Rank_Ep4 - Rank_Ep5 - Rank_Ep6,data=train_set2,family=binomial)
+log_reg_3 <- glm(Rank_Ep3 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep4 - Rank_Ep5 - Rank_Ep6,data=train_set3,family=binomial)
+log_reg_4 <- glm(Rank_Ep4 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep3 - Rank_Ep5 - Rank_Ep6,data=train_set4,family=binomial)
+log_reg_5 <- glm(Rank_Ep5 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep3 - Rank_Ep4 - Rank_Ep6,data=train_set5,family=binomial)
+log_reg_6 <- glm(Rank_Ep6 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep3 - Rank_Ep4 - Rank_Ep5,data=train_set6,family=binomial)
+```
+
+## Run predictions for Logistic Regression
+
+```{r}
+options(warn = -1)
+
+print("The Phantom Menace Confusion Matrix")
+phat <- predict(log_reg_1,newdata = test_set1,type="response")
+confusionMatrix(data=factor(if_else(phat >= .5, "Bottom 3", "Top 3")), reference=test_set1$Rank_Ep1, positive="Top 3")
+
+print("Attack of the Clones Confusion Matrix")
+phat <- predict(log_reg_2,newdata = test_set2,type="response")
+confusionMatrix(data=factor(if_else(phat >= .5, "Bottom 3", "Top 3")), reference=test_set2$Rank_Ep2, positive="Top 3")
+
+print("Revenge of the Sith Confusion Matrix")
+phat <- predict(log_reg_3,newdata = test_set3,type="response")
+confusionMatrix(data=factor(if_else(phat >= .5, "Bottom 3", "Top 3")), reference=test_set3$Rank_Ep3, positive="Top 3")
+
+print("A New Hope Confusion Matrix")
+phat <- predict(log_reg_4,newdata = test_set4,type="response")
+confusionMatrix(data=factor(if_else(phat >= .5, "Bottom 3", "Top 3")), reference=test_set4$Rank_Ep4, positive="Top 3")
+
+print("The Empire Strikes Back Confusion Matrix")
+phat <- predict(log_reg_5,newdata = test_set5,type="response")
+confusionMatrix(data=factor(if_else(phat >= .5, "Bottom 3", "Top 3")), reference=test_set5$Rank_Ep5, positive="Top 3")
+
+print("Return of the Jedi Confusion Matrix")
+phat <- predict(log_reg_6,newdata = test_set6,type="response")
+confusionMatrix(data=factor(if_else(phat >= .5, "Bottom 3", "Top 3")), reference=test_set6$Rank_Ep6, positive="Top 3")
+```
+
+## Run predictions (top 3, bottom 3 using lin_reg)
+```{r}
+options(warn = -1)
+
+lin_reg_1 <- lm(Rank_Ep1 ~ .-Rank_Ep2 - Rank_Ep3 - Rank_Ep4 - Rank_Ep5 - Rank_Ep6,data=train_set1)
+lin_reg_2 <- lm(Rank_Ep2 ~ .-Rank_Ep1 - Rank_Ep3 - Rank_Ep4 - Rank_Ep5 - Rank_Ep6,data=train_set2)
+lin_reg_3 <- lm(Rank_Ep3 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep4 - Rank_Ep5 - Rank_Ep6,data=train_set3)
+lin_reg_4 <- lm(Rank_Ep4 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep3 - Rank_Ep5 - Rank_Ep6,data=train_set4)
+lin_reg_5 <- lm(Rank_Ep5 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep3 - Rank_Ep4 - Rank_Ep6,data=train_set5)
+lin_reg_6 <- lm(Rank_Ep6 ~ .-Rank_Ep1 - Rank_Ep2 - Rank_Ep3 - Rank_Ep4 - Rank_Ep5,data=train_set6)
+
+
+print("The Phantom Menace Confusion Matrix")
+phat <- predict(lin_reg_1,newdata = test_set1,type="response")
+confusionMatrix(data=factor(if_else(phat >= 1.5, "Bottom 3", "Top 3")), reference=test_set1$Rank_Ep1, positive="Top 3")
+
+print("Attack of the Clones Confusion Matrix")
+phat <- predict(lin_reg_2,newdata = test_set2,type="response")
+confusionMatrix(data=factor(if_else(phat >= 1.5, "Bottom 3", "Top 3")), reference=test_set2$Rank_Ep2, positive="Top 3")
+
+print("Revenge of the Sith Confusion Matrix")
+phat <- predict(lin_reg_3,newdata = test_set3,type="response")
+confusionMatrix(data=factor(if_else(phat >= 1.5, "Bottom 3", "Top 3")), reference=test_set3$Rank_Ep3, positive="Top 3")
+
+print("A New Hope Confusion Matrix")
+phat <- predict(lin_reg_4,newdata = test_set4,type="response")
+confusionMatrix(data=factor(if_else(phat >= 1.5, "Bottom 3", "Top 3")), reference=test_set4$Rank_Ep4, positive="Top 3")
+
+print("The Empire Strikes Back Confusion Matrix")
+phat <- predict(lin_reg_5,newdata = test_set5,type="response")
+confusionMatrix(data=factor(if_else(phat >= 1.5, "Bottom 3", "Top 3")), reference=test_set5$Rank_Ep5, positive="Top 3")
+
+print("Return of the Jedi Confusion Matrix")
+phat <- predict(lin_reg_6,newdata = test_set6,type="response")
+confusionMatrix(data=factor(if_else(phat >= 1.5, "Bottom 3", "Top 3")), reference=test_set6$Rank_Ep6, positive="Top 3")
+```

@@ -1,0 +1,89 @@
+.container {
+    padding-bottom: 180px;
+}
+
+.title {
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.content-flexbox1 {
+    display: flex;
+    flex-wrap:wrap;
+    gap: 30px 2%;
+
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 30px;
+
+    /*border: 1px solid white;*/
+}
+
+button {
+    height: 80px;
+    width: 220px;
+    border: none;
+    
+    cursor: pointer;
+}
+
+button span {
+    display: none;
+}
+
+.yourOrders {
+    background: transparent;
+    background-image: url(../images/user-29.png);
+    background-repeat: no-repeat;
+
+    /*border: solid white 1px;*/
+}
+
+.security {
+    background: transparent;
+    background-image: url(../images/breakingBad_security.png);
+    background-repeat: no-repeat;
+}
+
+.payment {
+    background: transparent;
+    background-image: url(../images/breakingBad_payment.png);
+    background-repeat: no-repeat;
+}
+
+.help {
+    background: transparent;
+    background-image: url(../images/breakingBad_help.png);
+    background-repeat: no-repeat;
+}
+
+.profiles {
+    background: transparent;
+    background-image: url(../images/breakingBad_profiles.png);
+    background-repeat: no-repeat;
+}
+
+.content-flexbox2 {
+    display: flex;
+    flex-wrap:wrap;
+    gap: 30px 2%;
+
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 30px;
+
+    /*border: 1px solid white;*/
+}
+
+.dashboard {
+    background: transparent;
+    background-image: url(../images/breakingBad_dashboard.png);
+    background-repeat: no-repeat;
+}
+
+.manageProducts {
+    background: transparent;
+    background-image: url(../images/breakingBad_products.png);
+    background-repeat: no-repeat;
+}

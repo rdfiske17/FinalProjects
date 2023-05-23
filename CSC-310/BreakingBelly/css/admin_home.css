@@ -1,0 +1,54 @@
+.container {
+    padding-bottom: 100px;
+}
+
+.title {
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.content-flexbox1 {
+    display: flex;
+    flex-wrap:wrap;
+    gap: 30px 2%;
+
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 30px;
+
+    /*border: 1px solid white;*/
+
+    /*align-items: center;
+    justify-content: center;*/
+}
+
+button {
+    height: 80px;
+    width: 220px;
+    border: none;
+    
+    cursor: pointer;
+}
+
+button span {
+    display: none;
+}
+
+.editUsers {
+    background: transparent;
+    background-image: url(../images/breakingBad_edit_users.png);
+    background-repeat: no-repeat;
+}
+
+.editProducts {
+    background: transparent;
+    background-image: url(../images/breakingBad_edit_products.png);
+    background-repeat: no-repeat;
+}
+
+.editOrders {
+    background: transparent;
+    background-image: url(../images/breakingBad_edit_orders.png);
+    background-repeat: no-repeat;
+}
